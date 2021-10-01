@@ -2095,6 +2095,11 @@ def make_figure(args, constructor, trace_patch=None, layout_patch=None):
                 var = args["x"] if args["orientation"] == "h" else args["y"]
                 ascending = args.get("ecdfmode", "standard") != "reversed"
                 group = group.sort_values(by=base, ascending=ascending)
+
+                head = group.head(1).copy()
+                head['count'] = 0
+                group = pd.concat([head,group])
+
                 group_sum = group[var].sum()  # compute here before next line mutates
                 group[var] = group[var].cumsum()
                 if not ascending:
